@@ -1,13 +1,15 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
-@RestController
-public class HealthController {
+@Component
+public class HealthController implements HealthIndicator {
     
-    @GetMapping("/health")
-    public String healthCheck() {
-        return "OK";
+    @Override
+    public Health health() {
+        return Health.up().build();
     }
 }
