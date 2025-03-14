@@ -12,12 +12,14 @@ ENV SPRING_DATASOURCE_URL=jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
 ENV SPRING_DATASOURCE_USERNAME=${PGUSER}
 ENV SPRING_DATASOURCE_PASSWORD=${PGPASSWORD}
 
-# Add these environment variables to configure Spring Boot Actuator
-ENV MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=health,info
-ENV MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS=always
-ENV MANAGEMENT_HEALTH_PROBES_ENABLED=true
-ENV MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS=true
+# Add debugging for database connection
+ENV LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC=DEBUG
+ENV LOGGING_LEVEL_COM_ZAXXER_HIKARI=DEBUG
+ENV LOGGING_LEVEL_ROOT=INFO
+
+# Increase connection timeout
+ENV SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=30000
 
 EXPOSE 8080
-# Add a startup delay to ensure database connection is established
-CMD ["sh", "-c", "sleep 10 && java -jar app.jar"]
+# Add a longer startup delay and enable debug mode
+CMD ["sh", "-c", "sleep 20 && java -Ddebug -jar app.jar"]
