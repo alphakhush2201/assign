@@ -5,8 +5,8 @@
         "buildCommand": "./mvnw clean package -DskipTests"
     },
     "deploy": {
-        "startCommand": "java -jar target/*.jar",
-        "healthcheckPath": "/actuator/health",
+        "startCommand": "java -Dserver.port=$PORT -jar target/*.jar",
+        "healthcheckPath": "/health",
         "healthcheckTimeout": 180,
         "restartPolicyType": "ON_FAILURE"
     }
