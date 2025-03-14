@@ -6,6 +6,11 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
-ENV PORT=8080
-EXPOSE ${PORT}
-CMD ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
+
+# Make sure we use the environment variables provided by Railway
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+ENV SPRING_DATASOURCE_USERNAME=${PGUSER}
+ENV SPRING_DATASOURCE_PASSWORD=${PGPASSWORD}
+
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
