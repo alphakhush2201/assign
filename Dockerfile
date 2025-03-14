@@ -1,14 +1,11 @@
 FROM maven:3.8.6-openjdk-17-slim AS build
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-
-COPY src ./src
-COPY system.properties .
+COPY . .
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV PORT=8080
+EXPOSE ${PORT}
+CMD ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
