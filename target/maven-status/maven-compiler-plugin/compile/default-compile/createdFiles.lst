@@ -1,1 +1,6 @@
-com/example/demo/DemoApplication.class
+com/example/demo/model/Coupon.class
+com/example/demo/config/CorsConfig.class
+com/example/demo/dto/ErrorResponse.class
+com/example/demo/dto/CouponResponse.class
+com/example/demo/repository/CouponRepository.class
+com/example/demo/DatabaseInitializer.class
