@@ -42,10 +42,13 @@ public class HealthController {
     }
     
     @GetMapping("/healthz")
-    public Map<String, String> healthz() {
-        Map<String, String> status = new HashMap<>();
-        status.put("status", "UP");
-        return status;
+    public String healthz() {
+        return "OK";
+    }
+    
+    @GetMapping("/_health")
+    public String railwayHealth() {
+        return "OK";
     }
     
     @GetMapping("/")
