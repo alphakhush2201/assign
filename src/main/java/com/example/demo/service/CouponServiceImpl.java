@@ -23,6 +23,7 @@ public class CouponServiceImpl implements CouponService {
             return CouponResponse.builder()
                     .success(false)
                     .message("Please wait " + (remainingTime / 1000) + " seconds before claiming another coupon")
+                    .code(null)
                     .waitTimeInSeconds(remainingTime / 1000)
                     .build();
         }
@@ -39,7 +40,8 @@ public class CouponServiceImpl implements CouponService {
         return CouponResponse.builder()
                 .success(true)
                 .message("Successfully claimed coupon")
-                .couponCode(coupon.getCode())
+                .code(coupon.getCode())  // Changed from couponCode to code
+                .waitTimeInSeconds(0L)   // Added waitTimeInSeconds
                 .build();
     }
 

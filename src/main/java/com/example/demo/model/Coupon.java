@@ -1,8 +1,12 @@
 package com.example.demo.model;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Coupon {
     private Long id;
     private String code;
