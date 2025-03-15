@@ -43,12 +43,11 @@
 </head>
 <body>
     <h2>Claim a Coupon</h2>
-    <button id="claimButton" class="button" onclick="claimCoupon()">Get Coupon</button>
+    <button id="claimButton" class="button" onclick="claimCoupon()">Claim Coupon</button>
     <p id="result"></p>
 
     <script>
-        // Get API URL from window object or use default
-        const API_URL = window.API_URL || 'http://localhost:8080';
+        const API_URL = 'https://assign-production-f077.up.railway.app';
         
         async function claimCoupon() {
             const button = document.getElementById('claimButton');
@@ -60,10 +59,15 @@
                 resultElement.textContent = 'Claiming coupon...';
                 
                 const response = await fetch(`${API_URL}/api/coupons/claim`, {
-                    credentials: 'include',
+                    method: 'POST',
                     headers: {
-                        'Accept': 'application/json'
-                    }
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        browserSession: generateSessionId(),
+                        ipAddress: await getIPAddress()
+                    })
                 });
                 
                 if (!response.ok) {
@@ -74,39 +78,31 @@
                 
                 if (data.success) {
                     resultElement.className = 'success';
-                    resultElement.textContent = `${data.message} - Code: ${data.couponCode}`;
+                    resultElement.textContent = `Success! Your coupon code is: ${data.couponCode}`;
                 } else {
                     resultElement.className = 'error';
-                    resultElement.textContent = data.message;
-                    
-                    if (data.waitTimeInSeconds > 0) {
-                        startCountdown(data.waitTimeInSeconds);
-                    }
+                    resultElement.textContent = data.message || 'Failed to claim coupon';
                 }
             } catch (error) {
                 resultElement.className = 'error';
                 resultElement.textContent = 'An error occurred while claiming the coupon.';
             } finally {
-                if (!resultElement.textContent.includes('wait')) {
-                    button.disabled = false;
-                }
+                button.disabled = false;
             }
         }
 
-        function startCountdown(seconds) {
-            const button = document.getElementById('claimButton');
-            const updateCountdown = () => {
-                if (seconds <= 0) {
-                    button.disabled = false;
-                    button.textContent = 'Get Coupon';
-                    return;
-                }
-                button.disabled = true;
-                button.textContent = `Wait ${seconds}s`;
-                seconds--;
-                setTimeout(updateCountdown, 1000);
-            };
-            updateCountdown();
+        function generateSessionId() {
+            return 'session_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'unknown';
+            }
         }
     </script>
 </body>
