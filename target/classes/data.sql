@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS claims (
 TRUNCATE TABLE claims CASCADE;
 TRUNCATE TABLE coupons CASCADE;
 
--- Insert 100 unique coupons
+-- Insert predefined coupons
 INSERT INTO coupons (code, assigned) 
 VALUES 
 ('SPRING25', FALSE),
@@ -31,6 +31,9 @@ VALUES
 ('NEWUSER15', FALSE),
 ('LOYALTY20', FALSE)
 ON CONFLICT (code) DO NOTHING;
+
+-- Insert 100 unique coupons
+INSERT INTO coupons (code, assigned)
 SELECT 
     'COUPON' || LPAD(CAST(generate_series AS TEXT), 3, '0'),
     FALSE
