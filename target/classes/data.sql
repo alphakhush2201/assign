@@ -18,7 +18,19 @@ TRUNCATE TABLE claims CASCADE;
 TRUNCATE TABLE coupons CASCADE;
 
 -- Insert 100 unique coupons
-INSERT INTO coupons (code, assigned)
+INSERT INTO coupons (code, assigned) 
+VALUES 
+('SPRING25', FALSE),
+('SUMMER10', FALSE),
+('FALL15', FALSE),
+('WINTER20', FALSE),
+('WELCOME50', FALSE),
+('FLASH30', FALSE),
+('SPECIAL40', FALSE),
+('HOLIDAY25', FALSE),
+('NEWUSER15', FALSE),
+('LOYALTY20', FALSE)
+ON CONFLICT (code) DO NOTHING;
 SELECT 
     'COUPON' || LPAD(CAST(generate_series AS TEXT), 3, '0'),
     FALSE

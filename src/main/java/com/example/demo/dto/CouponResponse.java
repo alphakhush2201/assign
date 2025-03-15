@@ -1,15 +1,13 @@
 package com.example.demo.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CouponResponse {
+    private boolean success;
     private String message;
     private String code;
-    private boolean success;
     private Long waitTimeInSeconds;
 }

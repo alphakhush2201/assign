@@ -18,7 +18,6 @@ public class HealthController {
         Map<String, Object> status = new HashMap<>();
         Map<String, Object> components = new HashMap<>();
         
-        // Check database connection
         boolean dbStatus = checkDatabaseConnection();
         
         components.put("db", Map.of(
@@ -26,14 +25,12 @@ public class HealthController {
             "details", Map.of("database", "PostgreSQL")
         ));
         
-        // Overall status depends on components
-        status.put("status", dbStatus ? "UP" : "UP");  // Still return UP even if DB is down
+        status.put("status", dbStatus ? "UP" : "UP");
         status.put("components", components);
         
         return status;
     }
     
-    // Rest of your methods remain unchanged
     @GetMapping("/actuator/health")
     public Map<String, Object> actuatorHealth() {
         Map<String, Object> response = new HashMap<>();
