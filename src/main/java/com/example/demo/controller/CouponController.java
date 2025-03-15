@@ -1,37 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.CouponService;
-import com.example.demo.dto.CouponResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/coupons")
+@RequestMapping("/api")
 public class CouponController {
-    private final CouponService couponService;
 
-    public CouponController(CouponService couponService) {
-        this.couponService = couponService;
-    }
-
-    @GetMapping("/claim")
-    public ResponseEntity<CouponResponse> claimCoupon(HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        String session = request.getSession().getId();
+    @GetMapping("/coupons")
+    public Map<String, Object> getAllCoupons() {
+        Map<String, Object> response = new HashMap<>();
+        List<Map<String, Object>> coupons = new ArrayList<>();
         
-        CouponResponse response = couponService.claimCoupon(ip, session);
-        return ResponseEntity.ok(response);
-    }
+        // Add sample coupons (you can modify this to fetch from your database)
+        Map<String, Object> coupon1 = new HashMap<>();
+        coupon1.put("code", "WELCOME50");
+        coupon1.put("assigned", false);
+        coupons.add(coupon1);
 
-    @GetMapping("/remaining-time")
-    public ResponseEntity<Long> getRemainingTime(HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        String session = request.getSession().getId();
+        Map<String, Object> coupon2 = new HashMap<>();
+        coupon2.put("code", "SPRING25");
+        coupon2.put("assigned", false);
+        coupons.add(coupon2);
+
+        response.put("status", "success");
+        response.put("message", "Coupons retrieved successfully");
+        response.put("data", coupons);
         
-        long remainingTime = couponService.getRemainingTimeForNextClaim(ip, session);
-        return ResponseEntity.ok(remainingTime);
+        return response;
     }
 }
