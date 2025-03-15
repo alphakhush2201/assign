@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS claims (
 );
 
 -- Clear existing data
-TRUNCATE TABLE claims CASCADE;
-TRUNCATE TABLE coupons CASCADE;
+DELETE FROM claims;
+DELETE FROM coupons;
 
 -- Insert predefined coupons
 INSERT INTO coupons (code, assigned) 
@@ -29,12 +29,18 @@ VALUES
 ('SPECIAL40', FALSE),
 ('HOLIDAY25', FALSE),
 ('NEWUSER15', FALSE),
-('LOYALTY20', FALSE)
-ON CONFLICT (code) DO NOTHING;
+('LOYALTY20', FALSE);
 
--- Insert 100 unique coupons
-INSERT INTO coupons (code, assigned)
-SELECT 
-    'COUPON' || LPAD(CAST(generate_series AS TEXT), 3, '0'),
-    FALSE
-FROM generate_series(1, 100);
+-- Insert additional coupons using a loop approach for H2
+-- H2 doesn't support generate_series, so we'll use a different approach
+INSERT INTO coupons (code, assigned) VALUES ('COUPON001', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON002', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON003', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON004', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON005', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON006', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON007', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON008', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON009', FALSE);
+INSERT INTO coupons (code, assigned) VALUES ('COUPON010', FALSE);
+-- Add more coupons as needed
